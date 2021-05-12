@@ -69,4 +69,30 @@ SELECT Diseases.Name, COUNT(Diseases.Id) as [count]
     WHERE Receptions.Date_Reception BETWEEN '20010101' and '20051231'
     GROUP BY Diseases.Name;
 --UPDATE в разных таблицах, с WHERE, можно условно, например, изменить заранее созданные некорректные данные (5 шт.)
+UPDATE Animal 
+    SET Name = 'Добрый чел, позитивный'
+    WHERE Name = 'Джек'
+UPDATE Branches 
+    SET Name = 'Нижний тагил'
+    WHERE Name = 'Спартановка'
+UPDATE Medicians 
+    SET Name = 'Да'
+    WHERE Price = '20'
+UPDATE Positions 
+    SET Name = 'Врач'
+    WHERE Name = 'Чумной доктор'
+UPDATE States 
+    SET Name = 'Что'
+    WHERE Name = 'Удовлетворительное'
+      
 --DELETE в разных таблицах, с WHERE, можно условно, например, удалить заранее созданные некорректные данные (5 шт.)
+DELETE FROM Receptions
+    WHERE Date_Reception = '20210511';
+DELETE FROM Treatment
+    WHERE [Description] = 'Кашель';
+DELETE FROM Users
+    WHERE Birthday >= '20011213';
+DELETE FROM Diseases
+    WHERE Name = 'Да';
+DELETE FROM Positions
+    WHERE Name = 'Чумной доктор';

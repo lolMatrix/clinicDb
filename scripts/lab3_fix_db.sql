@@ -40,7 +40,10 @@ ALTER TABLE room_to_excursion
     ADD date_excursion /*new_column_name*/ date /*new_column_datatype*/ NULL /*new_column_nullability*/
 GO
 
-ALTER TABLE room_to_excursion
-    ALTER COLUMN date_excursion date NOT NULL
+ALTER TABLE Animal
+    ADD CONSTRAINT User_Id_Cascade
+    FOREIGN KEY (User_Id)
+    REFERENCES Users (Id)
+    ON DELETE CASCADE
 GO
 
