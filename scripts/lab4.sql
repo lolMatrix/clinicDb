@@ -288,7 +288,7 @@ SELECT top (100) SUM(Medicians.Price) as [total price], Medicians.Name FROM Trea
     WHERE Price > 20 AND Price < 100
     group by  Medicians.Name
     ORDER by Medicians.Name ASC;
---75 
+--75 Процент от продаж сотрудникам за определенный переод
 SELECT Employers.Name, Positions.Name as [Position], sum(Medicians.Price) over(Partition By Employers.Id) * 0.1 as [Percent]    
     FROM Employers 
     INNER JOIN Receptions ON Receptions.Emploer_Id = Employers.Id
@@ -299,20 +299,20 @@ SELECT Employers.Name, Positions.Name as [Position], sum(Medicians.Price) over(P
     Inner Join Positions ON Positions.Id = Employers.Id
     WHERE Receptions.Date_Reception > '19990101'
     ORDER BY Employers.Name DESC;
---76
+--76 Общая сумма рецепта
 SELECT top(100) SUM(Medicians.Price) as [total price], Medicians.Name FROM Treatment
     INNER JOIN Treatment_to_Medician ON Treatment_to_Medician.Treatment_id = Treatment.Id
     INNER JOIN Medicians ON Medicians.Id = Treatment_to_Medician.Medician_Id
     WHERE Medicians.Price > 0 and Medicians.Price < 100
     group by Medicians.Price, Medicians.Name
     ORDER BY Medicians.Name ASC;
---77
+--77 количество повторений имен сотрудников
 SELECT Name as [nAmE], COUNT(Name) as [count nAmE] FROM Employers
     INNER JOIN Receptions ON Receptions.Emploer_Id = Employers.Id
     GROUP BY Name
     HAVING count(Name) >= 2
     Order by [count nAmE] Desc;
---78
+--78 100 выписанных лекарств с датой выписки
 SELECT top(100) Medicians.Price, Medicians.Id, Medicians.Name, Receptions.Date_Reception FROM Medicians 
     INNER JOIN Treatment_to_Medician ON Treatment_to_Medician.Medician_id = Medicians.Id
     INNER JOIN Treatment ON Treatment.Id = Treatment_to_Medician.Treatment_id
@@ -322,7 +322,25 @@ SELECT top(100) Medicians.Price, Medicians.Id, Medicians.Name, Receptions.Date_R
     where Receptions.Date_Reception >= '20200101'
     ORDER BY Medicians.Name ASC;
 
-    --1. Сколько заданный пользователь за месяц  потратил всего 
+---Мода
+--1. Сколько заданный пользователь за месяц  потратил всего 
+SELECT SUM(Price * Treatment_to_Medician.Count) as price, Users.Name as Name FROM Users
+    join Animal on Users.Id = Animal.User_Id
+    JOIN Receptions on Animal.Id = Receptions.Animal_Id
+    JOIN Disease_To_Reception on Receptions.Id = Disease_To_Reception.Reception_Id
+    JOIN Diseases on Disease_To_Reception.Disease_Id = Diseases.Id
+    JOIN Treatment ON Diseases.Id = Treatment.Disease_Id
+    JOIN Treatment_to_Medician on Treatment_to_Medician.Treatment_id = Treatment.Id
+    JOIN Medicians on Treatment_to_Medician.Medician_Id = Medicians.Id
+    WHERE Date_Reception BETWEEN '20011201' and '20020101'
+            AND Users.Id = 1
+    GROUP BY Users.Name;
 --2. Для заданного филиала вывести топ 5 сотрудников по кол-ву приемов 
+SELECT top(5) Employers.Name, COUNT(Receptions.Id) as Count 
+        FROM Employers
+        JOIN Branches on Employers.Branch_Id = Branches.Id
+        JOIN Receptions ON Receptions.Emploer_Id = Employers.Id
+        WHERE Branches.Id = 1
+        GROUP BY Employers.Name
 --3. Карточка для заданного животного до заболеваний 
 --Добить до 90 запросов
