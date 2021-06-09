@@ -322,6 +322,55 @@ SELECT top(100) Medicians.Price, Medicians.Id, Medicians.Name, Receptions.Date_R
     where Receptions.Date_Reception >= '20200101'
     ORDER BY Medicians.Name ASC;
 
+--79 Все пользователи, приходившие в определенный филиал
+SELECT Users.Name, Branches.Name FROM Users
+    JOIN Animal on Users.Id = Animal.User_Id
+    JOIN Receptions on Animal.Id = Receptions.Animal_Id
+    JOIN Employers on Receptions.Emploer_Id = Employers.Id
+    JOIN Branches on Branches.Id = Employers.Branch_Id
+    WHERE Branches.Id = 2;
+
+--80 Лекарства, которые выписаны в кол-ве больше 10 штук
+SELECT Medicians.Name, Treatment_to_Medician.[Count] FROM Medicians
+    JOIN Treatment_to_Medician on Treatment_to_Medician.Medician_Id = Medicians.Id
+    WHERE Treatment_to_Medician.[Count] > 10;
+
+--81 Кол-во лекарств на складе
+SELECT COUNT(Medicians.[Id]) FROM [dbo].[Medicians];
+
+--82 Кол-во обращений за месяц
+SELECT COUNT(Receptions.Id) FROM Receptions
+    WHERE Date_Reception BETWEEN '20011201' and '20020101';
+
+--83 Кол-во уникальных имен лекарств
+SELECT Medicians.Name, COUNT(Medicians.Name) AS COUNT FROM Medicians
+    GROUP BY Medicians.Name;
+
+--84 3 самых распространненых пород
+SELECT top(3) Breeds.Name, COUNT(Animal.Id) as count FROM Breeds
+    JOIN Animal on Animal.Breed_Id = Breeds.Id
+    GROUP BY Breeds.Name
+    ORDER BY [count] Desc;
+
+--85 Выбор всех пользователей 
+SELECT * FROM Users;
+
+--86 Выбор пользователей у которых сегодня день рождение 
+SELECT Users.Birthday, Users.Name FROM Users
+    WHERE DAY(Birthday) = DAY(GETDATE()) AND MONTH(Birthday) = MONTH(GETDATE());
+
+--87 Выбор всех записей к врачу
+SELECT * FROM Receptions;
+
+--88 Выбор всех рецептов 
+SELECT * FROM Treatment;
+
+--89 Выбор всех лекарств
+SELECT * FROM Medicians;
+
+--90 Выбор всех заболеваний
+SELECT * FROM Diseases;
+
 ---Мода
 --1. Сколько заданный пользователь за месяц  потратил всего 
 SELECT SUM(Price * Treatment_to_Medician.Count) as price, Users.Name as Name FROM Users
@@ -343,4 +392,14 @@ SELECT top(5) Employers.Name, COUNT(Receptions.Id) as Count
         WHERE Branches.Id = 1
         GROUP BY Employers.Name
 --3. Карточка для заданного животного до заболеваний 
+SELECT * FROM Animal 
+        JOIN Breeds on Animal.Breed_Id = Breeds.Id
+        JOIN Users on Users.Id = Animal.User_Id
+        JOIN Receptions on Receptions.Animal_Id = Animal.Id
+        JOIN Employers on Employers.Id = Receptions.Emploer_Id
+        JOIN Positions on Employers.Position_Id = Positions.Id
+        JOIN Branches on Branches.Id = Employers.Branch_Id
+        JOIN Disease_To_Reception on Disease_To_Reception.Reception_Id = Receptions.Id
+        JOIN Diseases on Diseases.Id = Disease_To_Reception.Disease_Id
+        WHERE Animal.Id = 2   
 --Добить до 90 запросов

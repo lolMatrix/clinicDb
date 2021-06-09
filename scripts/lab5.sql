@@ -224,11 +224,14 @@ CREATE FUNCTION checkDisease(@id_disiase int)
 SELECT dbo.checkDisease(Id) From Diseases;
 GO
 --вьюшки 
+
+--Представления животных с названиями пород
 CREATE VIEW Animals AS
     SELECT Animal.Id as id, Animal.Name as name, Breeds.Name as breed FROM Animal
         JOIN Breeds ON Breeds.Id = Animal.Breed_Id;
 go
 
+-- Карточки болезней животных
 CREATE VIEW Cards AS
     SELECT Animal.Id as Id, Animal.Name as Name, Users.Name AS UserName, Receptions.[Description] as Description FROM Animal 
         JOIN Users on Users.Id = Animal.User_Id
@@ -236,6 +239,7 @@ CREATE VIEW Cards AS
         where Animal.Id = 5;
 GO
 
+-- Рецепты с лекарствами
 CREATE VIEW TreatmentMedicians AS
     SELECT Treatment.[Description] AS Treatment, Medicians.Name AS MedicianName, Medicians.Price as Price 
         FROM Treatment_to_Medician

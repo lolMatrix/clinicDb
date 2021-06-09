@@ -88,7 +88,20 @@
    После добавления индексов время исполнения тех же 5 запросов составило 0,217 секунд
    Скорость обработки увеличилась примерно в 3 раза
 ### Схемы вызовов
+1. ![alt text](img/planAfter1.png "74 запрос")
+1. ![alt text](img/planAfter2_1.png "75 запрос")
+   ![alt text](img/planAfter2_2.png "75 запрос")
+   ![alt text](img/planAfter2_3.png "75 запрос")
+   ![alt text](img/planAfter2_4.png "75 запрос")
+   ![alt text](img/planAfter2_5.png "75 запрос")
+1. ![alt text](img/planAfter3.png "76 запрос")
+1. ![alt text](img/planAfter4.png "77 и 78 запросы")
 
-##Остальные скрипты
+## Остальные скрипты
 Остальные скрипты 5 работы лежат в /scripts/lab_5.sql
 5 сложных функций лежат в /scripts/top3_hard_queries.sql
+
+## Реализация 
+Реализация лежит в папке webapp
+Написано на языке php
+Для связи с базой данных использовался класс PDO
