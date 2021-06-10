@@ -182,18 +182,15 @@ CREATE FUNCTION price(@price FLOAT)
         AS
         BEGIN
                 DECLARE @name VARCHAR(50);
-                
-                if @price < 10
-                        BEGIN
-                                SET @name = 'Дешево';
-                        END;
-                if @price >= 10 and @price < 50
-                        BEGIN
-                                SET @name = 'Средняя цена';
-                        END;
-                if @price >= 50
-                BEGIN
-                        SET @name = 'Выгодно';
+                SET @name =
+                CASE
+                        WHEN @price < 10
+                                THEN 'Дешево'
+                        
+                        WHEN @price >= 10 and @price < 50
+                                THEN 'Средняя цена'
+                WHEN @price >= 50
+                        THEN 'Выгодно'
                 END;
                 RETURN @name;
         END
@@ -246,3 +243,10 @@ CREATE VIEW TreatmentMedicians AS
         JOIN Treatment on Treatment.Id = Treatment_to_Medician.Treatment_id
         JOIN Medicians on Medicians.Id = Treatment_to_Medician.Medician_Id;
 go
+
+--case when в 2 функцию - сделано
+--индекс на контент часто используемый
+CREATE NONCLUSTERED INDEX MedicianName ON Medicians
+  (
+          Name ASC
+  )

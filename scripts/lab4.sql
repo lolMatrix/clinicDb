@@ -381,8 +381,7 @@ SELECT SUM(Price * Treatment_to_Medician.Count) as price, Users.Name as Name FRO
     JOIN Treatment ON Diseases.Id = Treatment.Disease_Id
     JOIN Treatment_to_Medician on Treatment_to_Medician.Treatment_id = Treatment.Id
     JOIN Medicians on Treatment_to_Medician.Medician_Id = Medicians.Id
-    WHERE Date_Reception BETWEEN '20011201' and '20020101'
-            AND Users.Id = 1
+    WHERE Date_Reception BETWEEN '20011201' and '20020101' AND Users.Id = 1
     GROUP BY Users.Name;
 --2. Для заданного филиала вывести топ 5 сотрудников по кол-ву приемов 
 SELECT top(5) Employers.Name, COUNT(Receptions.Id) as Count 
@@ -391,6 +390,7 @@ SELECT top(5) Employers.Name, COUNT(Receptions.Id) as Count
         JOIN Receptions ON Receptions.Emploer_Id = Employers.Id
         WHERE Branches.Id = 1
         GROUP BY Employers.Name
+        ORDER by COUNT DESC
 --3. Карточка для заданного животного до заболеваний 
 SELECT * FROM Animal 
         JOIN Breeds on Animal.Breed_Id = Breeds.Id

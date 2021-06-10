@@ -11,7 +11,10 @@
     Список лекарств:
     <ul>
         <?for($i = 0; $i < count($med); $i++){?>
-        <li><a href="/medician.php?id=<?=$med[$i]["Id"]?>"><?=$med[$i]["Name"]?> в кол-ве <?=$med[$i]["Count"]?></a></li>
+        <li>
+            <a href="/medician.php?id=<?=$med[$i]["Id"]?>"><?=$med[$i]["Name"]?> в кол-ве <?=$med[$i]["Count"]?></a>
+            <a href="/deleteTreatmentToMedician.php?treatment=<?=$id?>&medician=<?=$med[$i]["Id"]?>">Удалить лекарство из списка</a>
+        </li>
         <?}?>
     </ul>
 
